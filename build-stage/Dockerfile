@@ -1,8 +1,4 @@
-FROM denismakogon/ffmpeg-alpine:4.0-golang
-
-LABEL maintainer="Denis Makogon. mail: lildee1991@gmail.com"
-
-ENV OPENCV_VERSION=4.0.1
+ENV OPENCV_VERSION=4.1.0
 ENV BUILD="ca-certificates \
          git \
          build-base \
@@ -45,7 +41,7 @@ RUN mkdir /tmp/opencv && \
     -D CMAKE_BUILD_TYPE=RELEASE \
     -D CMAKE_INSTALL_PREFIX=/usr/local \
     -D OPENCV_EXTRA_MODULES_PATH=/tmp/opencv/opencv_contrib-${OPENCV_VERSION}/modules \
-    -D WITH_FFMPEG=YES \
+    -D WITH_FFMPEG=NO \
     -D INSTALL_C_EXAMPLES=NO \
     -D INSTALL_PYTHON_EXAMPLES=NO \
     -D BUILD_ANDROID_EXAMPLES=NO \
