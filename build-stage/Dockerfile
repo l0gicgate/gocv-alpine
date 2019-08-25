@@ -1,3 +1,5 @@
+FROM golang:1.12-alpine3.9
+
 ENV OPENCV_VERSION=4.1.0
 ENV BUILD="ca-certificates \
          git \
@@ -14,18 +16,13 @@ ENV BUILD="ca-certificates \
          libwebp \
          libwebp-dev \
          tiff \
-         libavc1394 \
          jasper-libs \
          openblas \
-         libgphoto2 \
-         gstreamer \
-         gst-plugins-base"
+         libgphoto2"
 
-ENV DEV="clang clang-dev cmake pkgconf \
-         openblas-dev gstreamer-dev gst-plugins-base-dev \
+ENV DEV="clang clang-dev cmake pkgconf openblas-dev \
          libgphoto2-dev libjpeg-turbo-dev libpng-dev \
-         tiff-dev jasper-dev libavc1394-dev"
-
+         tiff-dev jasper-dev"
 
 RUN apk update && \
     apk add --no-cache ${BUILD} ${DEV}
@@ -54,7 +51,7 @@ RUN mkdir /tmp/opencv && \
     -D BUILD_opencv_python2=NO \
     -D BUILD_opencv_python3=NO \
     -D OPENCV_GENERATE_PKGCONFIG=YES .. && \
-    make -j4 && \
+    make -j8 && \
     make install && \
     cd && rm -rf /tmp/opencv
 
@@ -65,4 +62,4 @@ ENV PKG_CONFIG_PATH /usr/local/lib64/pkgconfig
 ENV LD_LIBRARY_PATH /usr/local/lib64
 ENV CGO_CPPFLAGS -I/usr/local/include
 ENV CGO_CXXFLAGS "--std=c++1z"
-ENV CGO_LDFLAGS "-L/usr/local/lib -lopencv_core -lopencv_face -lopencv_videoio -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_video -lopencv_dnn -lopencv_xfeatures2d -lopencv_plot -lopencv_tracking"
+ENV CGO_LDFLAGS "-L/usr/local/lib -lopencv_core -lopencv_face -lopencv_imgproc -lopencv_highgui -lopencv_imgcodecs -lopencv_objdetect -lopencv_features2d -lopencv_dnn -lopencv_xfeatures2d -lopencv_plot -lopencv_tracking"
